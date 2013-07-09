@@ -1,0 +1,78 @@
+<html>
+<head>
+  <title>My Tabby Example</title>
+
+  <style>
+    .active-list-active {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div>
+    <form>
+      <input class="search">
+    </form>
+
+    <ul class="active-list">
+      <li><p>Test 1</p></li>
+      <li><p>Test 2</p></li>
+      <li><p>Test 3</p></li>
+    </ul>
+
+    <button class="prev">Prev</button>
+    <button class="next">Next</button>
+  </div>
+
+  <div>
+    <form>
+      <input class="search">
+    </form>
+
+    <ul class="active-list">
+      <li><p>Test 1</p></li>
+      <li><p>Test 2</p></li>
+      <li><p>Test 3</p></li>
+    </ul>
+
+    <button class="prev">Prev</button>
+    <button class="next">Next</button>
+  </div>
+
+  <script src="javascripts/jquery.js"></script>
+  <script src="javascripts/jquery.activelist.js"></script>
+  <script type="text/javascript">
+    $('.active-list').activeList({
+      interactions: {
+        13: function ($el){
+          alert($el.find("p").html());
+        },
+        shift_backspace: function($el) {
+          alert("backspace");
+        }
+      },
+      onExit: function($el) {
+        console.log("executing callback")
+        console.log($el);
+        $el.closest("div").find("input.search").focus();
+      }
+    });
+
+    // $.ajax({url: 'persons.json', type: 'get', success: function(data){window.persons = data;}});
+
+    $("form").on("submit", function(e){
+      e.preventDefault();
+      $(this).find("input").blur();
+      $(this).next(".active-list").activeList('enter');
+    });
+
+    $("button").on("click", function(e){
+      var $e = $(e.target);
+
+      if ($e.hasClass("next")) { $e.parent().find(".active-list").activeList('next') }
+      if ($e.hasClass("prev")) { $e.parent().find(".active-list").activeList('prev') }
+    });
+  </script>
+</body>
+</html>
